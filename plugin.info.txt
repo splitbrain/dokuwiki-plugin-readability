@@ -1,0 +1,8 @@
+base    readability
+name    Readability Plugin
+desc    Calculate Flesch-Kincaid and Gunning-Fog readability scores
+author  Andreas Gohr
+email   andi@splitbrain.org
+date    2012-01-15
+url     http://www.dokuwiki.org/plugin:readability
+
