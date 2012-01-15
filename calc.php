@@ -16,13 +16,14 @@ $text = strip_tags($text);
 $gf = gunning_fog_score($text);
 $fs = calculate_flesch($text);
 $fg = calculate_flesch_grade($text);
+$rt = calculate_readingtime($text);
 
 echo '<b>Readability Analysis</b>';
 echo '<ul>';
 printf('<li><div class="li"><b>Gunning-Fog Score:</b> %.2f ',$gf);
-if($gf < 13){
+if($gf < 12){
     echo '(very good)';
-}elseif($gf < 16){
+}elseif($gf < 15){
     echo '(okay)';
 }else{
     echo '(bad)';
@@ -30,9 +31,9 @@ if($gf < 13){
 echo ' lower is better';
 echo '</div></li>';
 printf('<li><div class="li"><b>Flesch-Kincaid Score:</b> %.2f ',$fs);
-if($fs < 35){
+if($fs < 50){
     echo '(bad)';
-}elseif($fs < 50){
+}elseif($fs < 80){
     echo '(okay)';
 }else{
     echo '(very good)';
@@ -40,7 +41,7 @@ if($fs < 35){
 echo ' higher is better';
 echo '</div></li>';
 printf('<li><div class="li"><b>Flesch-Kincaid Grade:</b> %.2f ',$fg);
-if($fg < 12){
+if($fg < 10){
     echo '(very good)';
 }elseif($fg < 18){
     echo '(okay)';
@@ -49,8 +50,21 @@ if($fg < 12){
 }
 echo ' lower is better';
 echo '</div></li>';
-
+echo '<li><div class="li"><b>Estimated reading time:</b> '.$rt.'</div></li>';
 echo '</ul>';
+
+/**
+ * Calculate estimated reading time
+ *
+ * @author Brian Cray
+ * @link http://briancray.com/2010/04/09/estimated-reading-time-web-design/
+ */
+function calculate_readingtime($text){
+    $word = str_word_count($text);
+    $m = floor($word / 200);
+    $s = floor($word % 200 / (200 / 60));
+    return "$m:$s";
+}
 
 /**
  * Calculate the Gunning-Fog score
@@ -119,6 +133,7 @@ function average_words_sentence($text) {
  */
 function average_syllables_word($text) {
     $words = explode(' ', $text);
+    $syllables = 0;
     for ($i = 0; $i < count($words); $i++) {
         $syllables = $syllables + count_syllables($words[$i]);
     }
@@ -165,6 +180,7 @@ function count_syllables($word) {
     // Based on Greg Fast's Perl module Lingua::EN::Syllables
     $word = preg_replace('/[^a-z]/is', '', strtolower($word));
     $word_parts = preg_split('/[^aeiouy]+/', $word);
+    $valid_word_parts = array();
     foreach ($word_parts as $key => $value) {
         if ($value <> '') {
             $valid_word_parts[] = $value;
