@@ -1,19 +1,17 @@
-addInitEvent(function(){
-    var prev = getElementsByClass('preview',null,'div');
-    if(!prev[0]) return;
+jQuery(function(){
+    var $prev = jQuery('div.preview');
+    if(!$prev.length) return;
 
     var out = document.createElement('div');
     out.id = 'plugin__readability';
-    prev[0].appendChild(out);
+    $prev.append(out);
 
-    var ajax = new sack(DOKU_BASE + 'lib/plugins/readability/calc.php');
-    ajax.AjaxFailedAlert = '';
-    ajax.encodeURIString = false;
-    if(ajax.failed) return true;
+    jQuery(out).load(
+        DOKU_BASE + 'lib/plugins/readability/calc.php',
+        {
+            html: $prev.html()
+        }
+    );
 
-    ajax.setVar('html',encodeURIComponent(prev[0].innerHTML));
-    ajax.elementObj = out;
-
-    ajax.runAJAX();
 });
 
