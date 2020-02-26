@@ -3,6 +3,6 @@ name    Readability Plugin
 desc    Calculate Flesch-Kincaid and Gunning-Fog readability scores
 author  Andreas Gohr
 email   andi@splitbrain.org
-date    2013-01-03
+date    2014-01-03
 url     http://www.dokuwiki.org/plugin:readability
 
